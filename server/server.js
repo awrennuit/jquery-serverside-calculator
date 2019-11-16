@@ -22,6 +22,14 @@ app.post(`/math`, (req, res)=>{
     res.sendStatus(200);
 })
 
+app.post(`/reset`, (req, res)=>{
+    console.log('in /reset POST');
+    num = [];
+    result = [];
+    history = [];
+    res.sendStatus(200);
+})
+
 app.get(`/math`, (req, res)=>{
     console.log('in /math GET');
     res.send(result);
@@ -35,19 +43,19 @@ app.get(`/result`, (req, res)=>{
 function doMath(op){
     result = [];
     switch(op){
-        case 'add':
+        case '+':
             result.push(+num[0] + +num[1]);
             history.push(`${+num[0]} + ${+num[1]} = ${result}`);
             break;
-        case 'sub':
+        case '-':
             result.push(+num[0] - +num[1]);
             history.push(`${+num[0]} - ${+num[1]} = ${result}`);
             break;
-        case 'multi':
+        case '*':
             result.push(+num[0] * +num[1]);
             history.push(`${+num[0]} * ${+num[1]} = ${result}`);
             break;
-        case 'div':
+        case '/':
             result.push(+num[0] / +num[1]);
             history.push(`${+num[0]} / ${+num[1]} = ${result}`);
             break;
