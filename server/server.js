@@ -26,7 +26,6 @@ app.post(`/reset`, (req, res)=>{
     console.log('in /reset POST');
     num = [];
     result = [];
-    history = [];
     res.sendStatus(200);
 })
 
@@ -37,6 +36,12 @@ app.get(`/math`, (req, res)=>{
 
 app.get(`/result`, (req, res)=>{
     console.log('in /result GET');
+    res.send(result);
+})
+
+app.get(`/history`, (req, res)=>{
+    console.log('in /history GET');
+    console.log('history:', history);
     res.send(history);
 })
 

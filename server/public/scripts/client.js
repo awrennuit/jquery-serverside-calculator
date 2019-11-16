@@ -3,11 +3,11 @@ $(document).ready(onReady);
 function onReady(){
     console.log('JQ');
     clearInput();
+    getHistory();
     $(`#clear`).on(`click`, clearInput);
     $(`.num-btn`).on(`click`, assignNumbers);
     $(`.op-btn`).on(`click`, assignOp);
     $(`#equals`).on(`click`, sendSolution);
-    $(`#equals`).on(`click`, clearArrays);
 }
 
 let num1 = [];
@@ -67,6 +67,8 @@ function sendSolution(){
     }).then(function(response){
         console.log('in /math POST');
         getSolution();
+        clearArrays();
+        getHistory();
     }).catch(function(err){
         alert(`something went wrong`);
         console.log(err);
@@ -76,7 +78,7 @@ function sendSolution(){
 function getSolution(){
     $.ajax({
         type: `GET`,
-        url: `/math`
+        url: `/result`
     }).then(function(response){
         showSolution(response);
     }).catch(function(err){
@@ -94,8 +96,23 @@ function showSolution(r){
 }
 
 function getHistory(){
-    let el = $(`#history`);
-    el.empty();
-    for(let i=0; i<)
-    el.append(`<li class`)
+    console.log('in appendHistory');
+    $.ajax({
+        type: `GET`,
+        url: `/history`
+    }).then(function(response){
+        console.log('appending history');
+        appendHistory(response);
+    }).catch(function(err){
+        alert(`something went wrong`);
+        console.log(err);
+    })
+}
+
+function appendHistory(r){
+    let el = $('#appendHistory');
+        el.empty();
+        for(let i=0; i<r.length; i++){
+            el.append(`<li class="list-item" data-index="${i}">${r[i]}</li>`);
+        }
 }
