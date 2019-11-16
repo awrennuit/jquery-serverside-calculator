@@ -11,7 +11,7 @@
 </head>
 <body>
     <h1>Server Side Calculator</h1>
-    <input type="number" id="num1-in" placeholder="enter number" />
+    <!-- <input type="number" id="num1-in" placeholder="enter number" />
     <button id="plus-sign" data-name="add">+</button>
     <button id="minus-sign" data-name="sub">-</button>
     <button id="multi-sign" data-name="multi">*</button>
@@ -24,6 +24,73 @@
     </div>
         <ul id="history">
 
-        </ul>
+        </ul> -->
+    <div class="row">
+        <div class="triple-column">
+            <input type="text" readonly id="input-field" />
+        </div>
+        <div class="column">
+            <button class="button" id="clear">C</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <button class="button num-btn" id="seven" data-name="7">7</button>
+        </div>
+        <div class="column">
+            <button class="button num-btn" id="eight" data-name="8">8</button>
+        </div>
+        <div class="column">
+            <button class="button num-btn" id="nine" data-name="9">9</button>
+        </div>
+        <div class="column">
+            <button class="button op-btn" id="plus" data-name="+">+</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <button class="button num-btn" id="four" data-name="4">4</button>
+        </div>
+        <div class="column">
+            <button class="button num-btn" id="five" data-name="5">5</button>
+        </div>
+        <div class="column">
+            <button class="button num-btn" id="six" data-name="6">6</button>
+        </div>
+        <div class="column">
+            <button class="button op-btn" id="minus" data-name="-">-</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <button class="button num-btn" id="one" data-name="1">1</button>
+        </div>
+        <div class="column">
+            <button class="button num-btn" id="two" data-name="2">2</button>
+        </div>
+        <div class="column">
+            <button class="button num-btn" id="three" data-name="3">3</button>
+        </div>
+        <div class="column">
+            <button class="button op-btn" id="multi" data-name="*">*</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <button class="button num-btn" id="zero" data-name="0">0</button>
+        </div>
+        <div class="column">
+            <button class="button num-btn" id="decimal" data-name=".">.</button>
+        </div>
+        <div class="column">
+            <button class="button" id="equals">=</button>
+        </div>
+        <div class="column">
+            <button class="button op-btn" id="divide" data-name="/">/</button>
+        </div>
+    </div>
+    <ul id="history">
+
+    </ul>
 </body>
 </html>

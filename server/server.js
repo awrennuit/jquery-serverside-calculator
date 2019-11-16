@@ -19,13 +19,17 @@ app.post(`/math`, (req, res)=>{
     num.push(req.body.num1);
     num.push(req.body.num2);
     doMath(req.body.op);
-    console.log('result:', result);
     res.sendStatus(200);
 })
 
 app.get(`/math`, (req, res)=>{
     console.log('in /math GET');
     res.send(result);
+})
+
+app.get(`/result`, (req, res)=>{
+    console.log('in /result GET');
+    res.send(history);
 })
 
 function doMath(op){
@@ -48,4 +52,5 @@ function doMath(op){
             history.push(`${+num[0]} / ${+num[1]} = ${result}`);
             break;
     }
+    num = [];
 }
