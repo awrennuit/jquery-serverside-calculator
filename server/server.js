@@ -41,14 +41,26 @@ app.get(`/result`, (req, res)=>{
 
 app.get(`/history`, (req, res)=>{
     console.log('in /history GET');
-    console.log('history:', history);
     res.send(history);
+})
+
+app.get(`/history/:index`, (req, res)=>{
+    console.log('in from /history GET', req.params.index);
+    res.send(history[req.params.index]);
+})
+
+app.delete('/history', (req, res)=>{
+    console.log('in /messages DELETE');
+    history = [];
+    res.send('deleted');
 })
 
 function doMath(op){
     result = [];
     switch(op){
         case '+':
+            console.log('num1', num[0]);
+            console.log('num2', num[1]);
             result.push(+num[0] + +num[1]);
             history.push(`${+num[0]} + ${+num[1]} = ${result}`);
             break;

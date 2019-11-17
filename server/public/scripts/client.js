@@ -8,6 +8,9 @@ function onReady(){
     $(`.num-btn`).on(`click`, assignNumbers);
     $(`.op-btn`).on(`click`, assignOp);
     $(`#equals`).on(`click`, sendSolution);
+    $(`#delete`).on(`click`, deleteHistory);
+    $(`#appendHistory`).on(`click`, `.list-item`, getFromHistory);
+    $(`#backspace`).on(`click`, backSpace);
 }
 
 let num1 = [];
@@ -29,6 +32,20 @@ function clearInput(){
     })
 }
 
+function clearAllArrays(){
+    $.ajax({
+        type:`POST`,
+        url: `/reset`
+    }).then(function(response){
+        num1 = [];
+        num2 = [];
+        operator = [];
+    }).catch(function(err){
+        alert(`something went wrong`);
+        console.log(err);
+    })
+}
+
 function clearArrays(){
     num1 = [];
     // num1.push($(`#input-field`).val());
@@ -36,14 +53,38 @@ function clearArrays(){
     operator = [];
 }
 
-function assignNumbers(){
+function backSpace(){
     if(operator.length === 0){
-        num1 += $(this).attr(`data-name`);
-        $('#input-field').val(num1);
+        num1 = num1.substr(0, num1.length-1);
+        $('#input-field').val(num1);  
+    }
+    else if(operator.length !== 0 && num2.length === 0){
+        operator = operator.substr(0, operator.length-1);
+        $('#input-field').val(num1 + operator); 
+
     }
     else{
-        num2 +=$(this).attr(`data-name`);
+        num2 = num2.substr(0, num2.length-1); 
         $('#input-field').val(num1 + operator + num2);
+    }
+}
+
+function assignNumbers(){
+    if(operator.length === 0 && num1.length < 10){
+        if(num1.includes(`.`) && $(this).attr(`data-name`) === `.`){
+        }
+        else{
+            num1 += $(this).attr(`data-name`);
+            $('#input-field').val(num1); 
+        }
+    }
+    else if(operator.length !== 0 && num2.length < 10){
+        if(num2.includes(`.`) && $(this).attr(`data-name`) === `.`){
+        }
+        else{
+            num2 +=$(this).attr(`data-name`);
+            $('#input-field').val(num1 + operator + num2);
+        }
     }
 }
 
@@ -55,24 +96,26 @@ function assignOp(){
 }
 
 function sendSolution(){
-    let objectToSend = {
-        num1: num1,
-        num2: num2,
-        op: operator
-    }
-    $.ajax({
-        type: `POST`,
-        url: `/math`,
-        data: objectToSend
-    }).then(function(response){
-        console.log('in /math POST');
-        getSolution();
-        clearArrays();
-        getHistory();
-    }).catch(function(err){
-        alert(`something went wrong`);
-        console.log(err);
-    })
+    if(num1.length > 0 && operator.length > 0 && num2.length > 0){
+        let objectToSend = {
+            num1: num1,
+            num2: num2,
+            op: operator
+        }
+        $.ajax({
+            type: `POST`,
+            url: `/math`,
+            data: objectToSend
+        }).then(function(response){
+            console.log('in /math POST');
+            getSolution();
+            clearArrays();
+            getHistory();
+        }).catch(function(err){
+            alert(`something went wrong`);
+            console.log(err);
+        })
+    }      
 }
 
 function getSolution(){
@@ -90,18 +133,16 @@ function getSolution(){
 function showSolution(r){
     let el = $('#input-field');
         el.empty();
-        el.val('');
         el.val(r);
         nums = [];
 }
 
 function getHistory(){
-    console.log('in appendHistory');
     $.ajax({
         type: `GET`,
         url: `/history`
     }).then(function(response){
-        console.log('appending history');
+        console.log('in /history GET');
         appendHistory(response);
     }).catch(function(err){
         alert(`something went wrong`);
@@ -115,4 +156,40 @@ function appendHistory(r){
         for(let i=0; i<r.length; i++){
             el.append(`<li class="list-item" data-index="${i}">${r[i]}</li>`);
         }
+}
+
+function getFromHistory(){
+    let index = $(this).data('index');
+    console.log('in getfromhistory');
+    console.log($(this).data('index'));
+    $.ajax({
+        type:'GET',
+        url: '/history/' + index
+    }).then(function(response){
+        console.log('in /history GET:', response);
+        viewFromHistory(response);
+    }).catch(function(err){
+        alert('something went wrong');
+        console.log(err);
+    })
+}
+
+function viewFromHistory(r){
+    let el = $('#input-field');
+    el.empty();
+    el.val(r);
+    clearAllArrays();
+}
+
+function deleteHistory(){
+    $.ajax({
+        type:'DELETE',
+        url: '/history'
+    }).then(function(response){
+        console.log('in /history DELETE:');
+        getHistory();
+    }).catch(function(err){
+        alert('something went wrong');
+        console.log(err);
+    })
 }
