@@ -48,7 +48,6 @@ function clearAllArrays(){
 
 function clearArrays(){
     num1 = [];
-    // num1.push($(`#input-field`).val());
     num2 = [];
     operator = [];
 }
