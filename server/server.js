@@ -29,11 +29,6 @@ app.post(`/reset`, (req, res)=>{
     res.sendStatus(200);
 })
 
-app.get(`/math`, (req, res)=>{
-    console.log('in /math GET');
-    res.send(result);
-})
-
 app.get(`/result`, (req, res)=>{
     console.log('in /result GET');
     res.send(result);
@@ -45,7 +40,7 @@ app.get(`/history`, (req, res)=>{
 })
 
 app.get(`/history/:index`, (req, res)=>{
-    console.log('in from /history GET', req.params.index);
+    console.log('in from /history GET');
     res.send(history[req.params.index]);
 })
 
@@ -59,8 +54,6 @@ function doMath(op){
     result = [];
     switch(op){
         case '+':
-            console.log('num1', num[0]);
-            console.log('num2', num[1]);
             result.push(+num[0] + +num[1]);
             history.push(`${+num[0]} + ${+num[1]} = ${result}`);
             break;
