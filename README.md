@@ -13,6 +13,6 @@ Try it out here: https://still-brook-78952.herokuapp.com/
 ## Future plans
 Eventually I want to fix the excessive decimals that Javascript sometimes outputs, keep the history bar permanently on the right side of the calculator (right now it shifts above the calculator with long numbers/decimals), and dry out the code some more.
 
-Thank you to all the people (staff and student) who challeneged and supported me with these new skills.
+Thank you to all the people (staff and student) who challenged and supported me with these new skills.
 
 If you have any questions or concerns, please email me at awren.nuit@gmail.com
