@@ -6,9 +6,9 @@ This server-side jQuery calculator was my weekend project for Week 2 onsite at P
 Try it out here: https://still-brook-78952.herokuapp.com/
 
 ## Technologies used
--Node.js
--jQuery
--Javascript
+- Node.js
+- jQuery
+- Javascript
 
 ## Future plans
 Eventually I want to fix the excessive decimals that Javascript sometimes outputs, keep the history bar permanently on the right side of the calculator (right now it shifts above the calculator with long numbers/decimals), and dry out the code some more.
