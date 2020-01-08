@@ -1,6 +1,4 @@
-$(document).ready(onReady);
-
-function onReady(){
+$(function(){
     clearInput();
     getHistory();
     $(`#clear`).on(`click`, clearInput);
@@ -10,7 +8,7 @@ function onReady(){
     $(`#delete`).on(`click`, deleteHistory);
     $(`#appendHistory`).on(`click`, `.list-item`, getFromHistory);
     $(`#backspace`).on(`click`, backSpace);
-}
+});
 
 let num1 = [];
 let num2 = [];
@@ -19,44 +17,45 @@ let total = [];
 
 function appendHistory(r){
     let el = $('#appendHistory');
-        el.empty();
-        for(let i=0; i<r.length; i++){
-            el.append(`<li class="list-item" data-index="${i}">${r[i]}</li>`);
-        }
+    el.empty();
+    for(let i=0; i<r.length; i++){
+        el.append(`<li class="list-item" data-index="${i}">${r[i]}</li>`);
+    }
 }
 
 function assignNumbers(){
+    let data = $(this).attr(`data-name`);
     if(total.length !== 0 && operator.length === 0){
         num1 = [];
         total = [];
-        if($(this).attr(`data-name`) === '0' && num1.length === 0){
-        }
+
+        if(data === '0' && num1.length === 0){}
         else{
-            num1 += $(this).attr(`data-name`);
+            num1 += data;
             $('#input-field').val(num1);
         }
     }
     else{
         if(operator.length === 0 && num1.length < 10){
-            if(num1.includes(`.`) && $(this).attr(`data-name`) === `.`){
-            }
+
+            if(num1.includes(`.`) && data === `.`){}
             else{
-                if($(this).attr(`data-name`) === '0' && num1.length === 0){
-                }
+
+                if(data === '0' && num1.length === 0){}
                 else{
-                    num1 += $(this).attr(`data-name`);
+                    num1 += data;
                     $('#input-field').val(num1);
                 }
             }
         }
         else if(operator.length !== 0 && num2.length < 10){
-            if(num2.includes(`.`) && $(this).attr(`data-name`) === `.`){
-            }
+
+            if(num2.includes(`.`) && data === `.`){}
             else{
-                if($(this).attr(`data-name`) === '0' && num2.length === 0){
-                }
+
+                if(data === '0' && num2.length === 0){}
                 else{
-                    num2 +=$(this).attr(`data-name`);
+                    num2 += data;
                     $('#input-field').val(num1 + operator + num2);
                 }
             }
@@ -72,18 +71,18 @@ function assignOp(){
 }
 
 function backSpace(){
-    if(operator.length === 0){
-        num1 = num1.substr(0, num1.length-1);
-        $('#input-field').val(num1);  
+    let el = $('#input-field')
+    if(operator.length === 0 && num1.length > 0){
+        num1 = num1.substring(0, num1.length-1);
+        el.val(num1);  
     }
     else if(operator.length !== 0 && num2.length === 0){
-        operator = operator.substr(0, operator.length-1);
-        $('#input-field').val(num1 + operator); 
-
+        operator = operator.substring(0, operator.length-1);
+        el.val(num1 + operator);
     }
-    else{
-        num2 = num2.substr(0, num2.length-1); 
-        $('#input-field').val(num1 + operator + num2);
+    else if(num2.length > 0){
+        num2 = num2.substring(0, num2.length-1); 
+        el.val(num1 + operator + num2);
     }
 }
 
@@ -92,19 +91,11 @@ function clearAllArrays(){
         type:`POST`,
         url: `/reset`
     }).then(function(response){
-        console.log('in /reset POST');
-        num1 = [];
-        num2 = [];
-        operator = [];
-    }).catch(function(err){
-        alert(`something went wrong`);
-        console.log(err);
-    })
-}
-
-function clearArrays(){
-    num2 = [];
-    operator = [];
+        clearThreeArrays();
+    }).catch(function(error){
+        alert(`error resetting numbers`);
+        console.log(error);
+    });
 }
 
 function clearInput(){
@@ -112,15 +103,23 @@ function clearInput(){
         type:`POST`,
         url: `/reset`
     }).then(function(response){
-        console.log('in /reset POST');
-        num1 = [];
-        num2 = [];
-        operator = [];
+        clearThreeArrays();
         $(`#input-field`).val('');
-    }).catch(function(err){
-        alert(`something went wrong`);
-        console.log(err);
-    })
+    }).catch(function(error){
+        alert(`error clearing display`);
+        console.log(error);
+    });
+}
+
+function clearThreeArrays(){
+    num1 = [];
+    num2 = [];
+    operator = [];
+}
+
+function clearTwoArrays(){
+    num2 = [];
+    operator = [];
 }
 
 function deleteHistory(){
@@ -128,26 +127,24 @@ function deleteHistory(){
         type:'DELETE',
         url: '/history'
     }).then(function(response){
-        console.log('in /history DELETE');
         getHistory();
-    }).catch(function(err){
-        alert('something went wrong');
-        console.log(err);
-    })
+    }).catch(function(error){
+        alert('error removing history');
+        console.log(error);
+    });
 }
 
 function getFromHistory(){
     let index = $(this).data('index');
     $.ajax({
         type:'GET',
-        url: '/history/' + index
+        url: `/history/${index}`
     }).then(function(response){
-        console.log('in from /history GET');
         viewFromHistory(response);
-    }).catch(function(err){
-        alert('something went wrong');
-        console.log(err);
-    })
+    }).catch(function(error){
+        alert('error retrieving from history');
+        console.log(error);
+    });
 }
 
 function getHistory(){
@@ -155,12 +152,11 @@ function getHistory(){
         type: `GET`,
         url: `/history`
     }).then(function(response){
-        console.log('in /history GET');
         appendHistory(response);
-    }).catch(function(err){
-        alert(`something went wrong`);
-        console.log(err);
-    })
+    }).catch(function(error){
+        alert(`error displaying history`);
+        console.log(error);
+    });
 }
 
 function getSolution(){
@@ -168,12 +164,11 @@ function getSolution(){
         type: `GET`,
         url: `/result`
     }).then(function(response){
-        console.log('in /result GET');
         showSolution(response);
-    }).catch(function(err){
-        alert(`something went wrong`);
-        console.log(err);
-    })
+    }).catch(function(error){
+        alert(`error calculating result`);
+        console.log(error);
+    });
 }
 
 function sendSolution(){
@@ -183,28 +178,28 @@ function sendSolution(){
             num2: num2,
             op: operator
         }
+
         $.ajax({
             type: `POST`,
             url: `/math`,
             data: objectToSend
         }).then(function(response){
-            console.log('in /math POST');
             getSolution();
-            clearArrays();
+            clearTwoArrays();
             getHistory();
-        }).catch(function(err){
-            alert(`something went wrong`);
-            console.log(err);
-        })
+        }).catch(function(error){
+            alert(`error sending equation`);
+            console.log(error);
+        });
     }      
 }
 
 function showSolution(r){
     let el = $('#input-field');
-        el.empty();
-        el.val(r);
-        total = r;
-        num1 = r;
+    el.empty();
+    el.val(Math.round((+r + 0.00001) * 100) / 100);
+    total = r;
+    num1 = r;
 }
 
 function viewFromHistory(r){
